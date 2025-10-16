@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XCVT-Crasher - Login</title>
+
+  <!-- Google Font & Icon -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="https://files.catbox.moe/ivptvt.jpg" type="image/png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: black;
+      font-family: 'Poppins', sans-serif;
+      color: #b19cd9;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .login-container {
+      position: relative;
+      z-index: 2;
+      background: rgba(138, 43, 226, 0.05);
+      border: 1px solid rgba(138, 43, 226, 0.2);
+      backdrop-filter: blur(8px);
+      padding: 40px 30px;
+      border-radius: 20px;
+      max-width: 450px;
+      width: 90%;
+      box-shadow: 0 0 25px rgba(138, 43, 226, 0.3);
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      width: 80px;
+      filter: drop-shadow(0 0 10px #8a2be2);
+      margin-bottom: 15px;
+    }
+
+    .title {
+      font-size: 32px;
+      color: #b88aff;
+      text-shadow: 0 0 10px #b88aff;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #d6b3ff;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .form-group i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #8a2be2;
+      font-size: 16px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 14px 14px 14px 45px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(138, 43, 226, 0.1);
+      color: white;
+      font-size: 14px;
+      font-family: 'Poppins', sans-serif;
+      border: 1px solid rgba(138, 43, 226, 0.3);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #8a2be2;
+      box-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+    }
+
+    .form-control::placeholder {
+      color: #b19cd9;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      background: linear-gradient(135deg, #8a2be2, #4b0082);
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      margin-top: 10px;
+    }
+
+    .btn-login:hover {
+      background: #9932cc;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(138, 43, 226, 0.4);
+    }
+
+    .btn-access {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      background: rgba(138, 43, 226, 0.2);
+      color: #b88aff;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 500;
+      text-decoration: none;
+      margin-top: 15px;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(138, 43, 226, 0.3);
+    }
+
+    .btn-access:hover {
+      background: rgba(138, 43, 226, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 12px;
+      color: #8a2be2;
+    }
+
+    /* Toast Notification Styles - Sama seperti di dashboard */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      background: rgba(70, 0, 120, 0.9);
+      border: 1px solid #8a2be2;
+      color: white;
+      z-index: 1000;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transform: translateX(100vw);
+      transition: transform 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notification.error {
+      background: rgba(120, 0, 0, 0.9);
+      border-color: #ff4444;
+    }
+
+    .notification.success {
+      background: rgba(0, 100, 0, 0.9);
+      border-color: #44ff44;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 30px 20px;
+        width: 95%;
+      }
+      
+      .title {
+        font-size: 28px;
+      }
+      
+      .subtitle {
+        font-size: 13px;
+      }
+      
+      .form-control {
+        padding: 12px 12px 12px 40px;
+      }
+      
+      .btn-login, .btn-access {
+        padding: 12px;
+      }
+      
+      .notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        padding: 12px 15px;
+      }
+    }
+
+    @media (max-width: 350px) {
+      .title {
+        font-size: 24px;
+      }
+      
+      .form-group i {
+        left: 10px;
+      }
+      
+      .form-control {
+        padding: 10px 10px 10px 35px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="particles"></div>
+  
+  <div class="login-container">
+    <div class="logo-container">
+      <img src="https://files.catbox.moe/0mg829.jpg" alt="PANGGOFFC Logo" class="logo">
+      <div class="title">XCVT-Crasher V1.0</div>
+      <div class="subtitle">Gateway to System Endpoint API Bug</div>
+    </div>
+
+    <form method="POST" action="/auth" id="loginForm">
+      <div class="form-group">
+        <i class="fas fa-user"></i>
+        <input type="text" name="username" class="form-control" placeholder="Username" required />
+      </div>
+      <div class="form-group">
+        <i class="fas fa-key"></i>
+        <input type="password" name="password" class="form-control" placeholder="Password" required />
+      </div>
+      <button type="submit" class="btn-login">
+        <i class="fas fa-lock"></i> LOGIN NOW
+      </button>
+    </form>
+
+    <!-- TOMBOL YANG DIUBAH: Sekarang mengarah ke dashboard dengan anchor #plans -->
+    <a class="btn-access" href="/#plans">
+      <i class="fas fa-crown"></i> VIEW PLANS & PRICING
+    </a>
+
+    <div class="footer">© 2025 PanggOfficial. All rights reserved.</div>
+  </div>
+
+  <!-- Toast notification seperti di dashboard -->
+  <div id="notification" class="notification">
+    <i class="fas fa-check-circle"></i> 
+    <span id="notification-text"></span>
+  </div>
+  
+  <script>
+    // Toast notification for messages
+    const params = new URLSearchParams(window.location.search);
+    const msg = params.get("msg");
+    const type = params.get("type") || "info"; // info, error, success
+    
+    if (msg) {
+      showNotification(decodeURIComponent(msg), type);
+    }
+    
+    // Fungsi untuk menampilkan notifikasi
+    function showNotification(message, type = "info") {
+      const notification = document.getElementById("notification");
+      const notificationText = document.getElementById("notification-text");
+      
+      // Set pesan dan tipe notifikasi
+      notificationText.textContent = message;
+      notification.className = "notification"; // Reset class
+      notification.classList.add("show");
+      
+      // Add icon based on message type
+      let icon = "fas fa-info-circle";
+      if (type === "error") {
+        icon = "fas fa-exclamation-circle";
+        notification.classList.add("error");
+      } else if (type === "success") {
+        icon = "fas fa-check-circle";
+        notification.classList.add("success");
+      }
+      
+      notification.innerHTML = `<i class="${icon}"></i> <span id="notification-text">${message}</span>`;
+      
+      // Hide toast after 5 seconds
+      setTimeout(() => {
+        notification.classList.remove("show");
+      }, 5000);
+    }
+    
+    // Prevent form resubmission on page refresh
+    if (window.history.replaceState) {
+      window.history.replaceState(null, null, window.location.href.split('?')[0]);
+    }
+    
+    // Simulasi login error (untuk testing)
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      // Hanya untuk demonstrasi - di production ini akan dihandle oleh backend
+      const username = this.username.value;
+      const password = this.password.value;
+      
+      // Contoh: jika username/password salah, tampilkan error
+      if (username === "demo" && password === "error") {
+        e.preventDefault();
+        showNotification("Username atau password salah", "error");
+      }
+    });
+  </script>
+  
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/gh/jnicol/particleground/jquery.particleground.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      particleground(document.getElementById('particles'), {
+        dotColor: '#b19cd9',
+        lineColor: '#8a2be2',
+        minSpeedX: 0.1,
+        maxSpeedX: 0.3,
+        minSpeedY: 0.1,
+        maxSpeedY: 0.3,
+        density: 10000,
+        particleRadius: 3,
+      });
+    }, false);
+  </script>
+</body>
+</html>
